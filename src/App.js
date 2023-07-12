@@ -4,6 +4,7 @@ import { DiGoogleDrive} from 'react-icons/di';
 import { FaCss3, FaDiscord, FaInstagram, FaGithub, FaBook, FaFigma } from 'react-icons/fa';
 import { GiHamburgerMenu } from 'react-icons/gi'
 import { IoMdMail } from 'react-icons/io';
+import { RxNotionLogo } from 'react-icons/rx';
 import React, {useState, useEffect, Component} from 'react'
 
 import porsche from './videos/porsche.gif';
@@ -74,6 +75,11 @@ const otherBookmarks = [
     'label':  'thesaurus',
     'link':   'https://www.thesaurus.com/',
     'icon':   FaBook
+  },
+  {
+    'label':  'notion',
+    'link':   'https://www.notion.so/',
+    'icon':   RxNotionLogo
   }
 ];
 
@@ -178,40 +184,19 @@ function Clock(){
 
   return (
     <>
-      {/* Clock */}
-      <div className="flex w-[500px] 2xl:w-[900px] m-auto">
-        {/* Time */}
-        <div className="text-6xl 2xl:text-9xl font-black flex-1">
-          <div className="relative">
-            <div className="invisible inline-block">spacer</div>
-            <div className="absolute top-0 -left-6 text-[#00000000] text-shadow text-stroke">{time.getHours()}</div>
-          </div>
-          <div className="relative">
-            <div className="invisible inline-block">spacer</div>
-            <div className="absolute -top-8 left-20 text-[#00000000] text-shadow text-stroke">{time.getMinutes()}</div>
-          </div>
-          <div className="relative">
-            <div className="invisible inline-block">spacer</div>
-            <div className="absolute -top-7 left-6 text-6xl text-[#00000000] text-shadow text-stroke">{time.getSeconds()}</div>
-          </div>
+      {/* Time */}
+      <div className="text-6xl font-black flex w-[365px] justify-between m-auto">
+        <div className="">
+          {time.getHours()}:{time.getMinutes()}:{time.getSeconds()}
         </div>
+        <div>
+          AM
+        </div>
+      </div>
 
-        {/* Date */}
-        <div className="text-6xl 2xl:text-9xl font-black flex-1">
-          <div className="relative">
-            <div className="invisible inline-block">spacer</div>
-            <div className="absolute top-0 left-10 text-[#00000000] text-shadow text-stroke">{days[time.getDay()]}</div>
-          </div>
-          <div className="relative">
-            <div className="invisible inline-block">spacer</div>
-            <div className="absolute top-0 text-6xl text-[#00000000] text-shadow text-stroke">{months[time.getMonth()]}</div>
-          </div>
-          <div className="relative">
-            <div className="invisible inline-block">spacer</div>
-            <div className="absolute -top-16 left-36 text-[#00000000] text-shadow text-stroke">{time.getDate()}</div>
-          </div>
-        </div>
-        
+      {/* Date */}
+      <div className="text-center text-6xl font-black text-light">
+        {days[time.getDay()]}-{months[time.getMonth()]}-{time.getDate()}
       </div>
     </>
   )
@@ -315,19 +300,14 @@ function App() {
         {/* upper */}
         <div className="h-2/3 w-full flex flex-col justify-around relative bg-cover bg-center" id="asdf">
 
-          <SearchOptions/>
+          <SearchOptions onChangeFunction={engineClick}/>
 
           {/* clock */}
           <div className="text-center flex flex-col">
-            <div className="text-center text-6xl font-black">
-              04:28 AM
-            </div>
-            <div className="text-center text-6xl font-black text-light">
-              2023-07-10
-            </div>
+            <Clock/>
           </div>
 
-          <SearchBar/>
+          <SearchBar engineSubmit={engineSubmit} search={searchCLick} inputChange={inputChange}/>
         </div>
         
         {/* lower */}
