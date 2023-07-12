@@ -8,7 +8,9 @@ html, body, main, #root {
   width: 100%;
 }
 
-
+#asdf {
+  background-image: url('/src/photos/mountain.jpg');
+}
 
 .text-stroke {
   -webkit-text-stroke: 2px #FCA311;
@@ -16,4 +18,8 @@ html, body, main, #root {
 
 .search-button {
   @apply before:content-[attr(label)] appearance-none cursor-pointer w-24 xl:w-40 px-1 py-1.5 text-center font-bold text-sm xl:text-2xl text-light border-light border-b-8 border-[3px] border-solid rounded-md duration-150 ease-[cubic-bezier(.17,1.76,.23,.92)] checked:bg-highlight checked:border-b-[3px];
+}
+
+.search-button-new {
+  @apply before:content-[attr(label)] appearance-none cursor-pointer w-32 px-1 py-4 text-center font-bold text-base text-light checked:bg-highlight;
 }

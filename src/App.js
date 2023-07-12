@@ -4,7 +4,7 @@ import { DiGoogleDrive} from 'react-icons/di';
 import { FaCss3, FaDiscord, FaInstagram, FaGithub, FaBook, FaFigma } from 'react-icons/fa';
 import { GiHamburgerMenu } from 'react-icons/gi'
 import { IoMdMail } from 'react-icons/io';
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, Component} from 'react'
 
 import porsche from './videos/porsche.gif';
 
@@ -19,52 +19,62 @@ const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'];
 
 // Bookmark data
 
-const bookmarkData = [
+const enterBookmarks = [
   {
     'label':  'youtube',
     'link':   'https://www.youtube.com/',
     'icon':   AiFillYoutube
   },
   {
+    'label':  'instagram',
+    'link':   'https://www.instagram.com/',
+    'icon':   FaInstagram
+  },
+];
+
+const socialsBookmarks = [
+  {
+    'label':  'discord',
+    'link':   'https://discord.com/channels/@me',
+    'icon':   FaDiscord
+  },
+
+  {
     'label':  'gmail',
     'link':   'https://mail.google.com/',
     'icon':   IoMdMail
+  }
+];
+
+const workBookmarks = [
+  {
+    'label':  'ffe',
+    'link':   'https://freefrontend.com/',
+    'icon':   FaCss3
   },
+    {
+    'label':  'figma',
+    'link':   'https://www.figma.com',
+    'icon':   FaFigma
+  },
+  {
+    'label':  'github',
+    'link':   'https://github.com/',
+    'icon':   FaGithub
+  }
+];
+
+const otherBookmarks = [
   {
     'label':  'gdrive',
     'link':   'https://drive.google.com/drive/u/0/my-drive',
     'icon':   DiGoogleDrive
   },
   {
-    'label':  'ffe',
-    'link':   'https://freefrontend.com/',
-    'icon':   FaCss3
-  },
-  {
-    'label':  'discord',
-    'link':   'https://discord.com/channels/@me',
-    'icon':   FaDiscord
-  },
-  {
-    'label':  'github',
-    'link':   'https://github.com/',
-    'icon':   FaGithub
-  },
-  {
-    'label':  'instagram',
-    'link':   'https://www.instagram.com/',
-    'icon':   FaInstagram
-  },
-  {
     'label':  'thesaurus',
     'link':   'https://www.thesaurus.com/',
     'icon':   FaBook
-  },
-  {
-    'label':  'figma',
-    'link':   'https://www.figma.com',
-    'icon':   FaFigma
-  },
+  }
 ];
 
 const engines = {"google":"https://www.google.com/search?q=", "duckduckgo":"https://duckduckgo.com/?q=", "youtube":"https://www.youtube.com/results?q=", "scholar":"https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q="}
@@ -107,9 +117,9 @@ function getTargetUrl(value, engine){
 const Bookmark = ({icon: Component, label, link}) => {
   return (
     <>
-     <div className=" relative flex flex-row items-center w-full py-0.5 ml-[22px] group-hover:ml-4 duration-300">
-        <Component className="text-2xl  text-highlight "/>
-        <a href={link} className="opacity-0 group-hover:opacity-100 absolute left-0 group-hover:left-12 text-xl w-[128px] text-light duration-300">{label}</a>
+     <div className="flex flex-row items-center w-full hover:cursor-pointer group">
+        <Component className="text-2xl text-dark/75 group-hover:text-highlight"/>
+        <a href={link} className="flex-1 pl-4 text-xl duration-300 text-dark/75 group-hover:text-highlight">{label}</a>
       </div>
     </>
   )
@@ -128,7 +138,7 @@ function SideBar(){
 
           {/* Bookmark list */}
           <div className="flex-1">
-            {bookmarkData.map((bookmark) => 
+            {enterBookmarks.map((bookmark) => 
               Bookmark({icon: bookmark.icon, label: bookmark.label, link: bookmark.link})
             )}
           </div>
@@ -145,13 +155,15 @@ function SearchOptions(props){
   return(
     <>
       {/* Search Options */}
-      <div className="flex justify-around items-end 2xl:w-[700px] 2xl:m-auto" onChange={props.onChangeFunction}>
-        <input label="google"     value="google"      type="radio" name="search" class="search-button" defaultChecked/>
-        <input label="duckduckgo" value="duckduckgo"  type="radio" name="search" class="search-button" />
-        <input label="youtube"    value="youtube"     type="radio" name="search" class="search-button" />
-        <input label="scholar"    value="scholar"     type="radio" name="search" class="search-button" />
+      <div className="absolute inset-x-0 top-0 bg-dark" onChange={props.onChangeFunction}>
+        <div className="w-[512px] flex justify-around items-end m-auto">
+          <input label="google"     value="google"      type="radio" name="search" class="search-button-new" defaultChecked/>
+          <input label="duckduckgo" value="duckduckgo"  type="radio" name="search" class="search-button-new" />
+          <input label="youtube"    value="youtube"     type="radio" name="search" class="search-button-new" />
+          <input label="scholar"    value="scholar"     type="radio" name="search" class="search-button-new" />
+        </div>
       </div>
-      <br/>
+      {/* <br/> */}
     </>
   )
 }
@@ -210,11 +222,15 @@ function SearchBar(props){
   return (
     <>
       {/* Search Bar */}
-      <form className="flex justify-center w-[500px] 2xl:w-[900px] m-auto px-6 py-1 2xl:py-3 mb-8 border-light border-4 border-solid rounded-lg" onSubmit={props.engineSubmit}>
-        <input type="text" className="w-10/12 focus:outline-none bg-background text-xl 2xl:text-3xl text-light" onChange={props.inputChange}/>
-        <AiOutlineSearch className="text-4xl w-1/6 text-highlight hover:cursor-pointer" onClick={props.search}/>
+      <form className="absolute bottom-[-28px] inset-x-0 flex justify-center w-[500px] 2xl:w-[900px] bg-light drop-shadow-lg rounded-full m-auto flex" onSubmit={props.engineSubmit}>
+        <div className="flex-1 py-2 pl-2  ">
+          <input type="text" className="w-full focus:outline-none bg-light text-xl 2xl:text-3xl text-dark rounded-full" onChange={props.inputChange}/>
+        </div>
+        <div className="bg-dark w-[100px] hover:cursor-pointer rounded-r-full flex flex-col justify-center border-1 border-solid border-dark">
+          <AiOutlineSearch className="text-4xl text-highlight hover:cursor-pointer m-auto" onClick={props.search}/>
+        </div>
       </form>
-      <br/>
+      {/* <br/> */}
     </>
   )
 }
@@ -238,7 +254,6 @@ function BookmarkSection(){
     </>
   )
 }
-
 
 
 // * * * * * * * * * * * * * * * 
@@ -295,25 +310,68 @@ function App() {
     <main className="h-full w-full bg-background flex align-center">
       <ThemeSwitcher/>
 
-      <div className="w-full flex flex-row">
-        {/* left stuff */}
-        <div className="flex-1 2xl:flex-none flex ">
-          <div className="bg-dark w-[500px] h-[400px] 2xl:h-[800px] 2xl:mx-20 m-auto align-center bg-background">
-            <BookmarkSection/>
+      <div className="w-full flex flex-col flex flex-col">
+
+        {/* upper */}
+        <div className="h-2/3 w-full flex flex-col justify-around relative bg-cover bg-center" id="asdf">
+
+          <SearchOptions/>
+
+          {/* clock */}
+          <div className="text-center flex flex-col">
+            <div className="text-center text-6xl font-black">
+              04:28 AM
+            </div>
+            <div className="text-center text-6xl font-black text-light">
+              2023-07-10
+            </div>
           </div>
+
+          <SearchBar/>
         </div>
         
-        {/* right stuff */}
-        <div className="w-[500px] h-[600px] 2xl:h m-auto flex-1 flex flex-col justify-center">
-          <Clock/>        
-          <SearchBar engineSubmit={engineSubmit} search={searchCLick} inputChange={inputChange}/>
-          <SearchOptions onChangeFunction={engineClick}/>
+        {/* lower */}
+        <div className="h-1/3 bg-light pt-12 flex justify-around text-dark">
+          <div className="text-2xl font-semibold">
+            entertainment
+            <div className="flex flex-col font-normal text-lg pl-5">
+              {/* Bookmark list */}
+              {enterBookmarks.map((bookmark) => 
+                Bookmark({icon: bookmark.icon, label: bookmark.label, link: bookmark.link})
+              )}
+            </div>
+          </div>
+          <div className="text-2xl font-semibold">
+            socials
+            <div className="flex flex-col font-normal text-lg pl-5">
+              {/* Bookmark list */}
+              {socialsBookmarks.map((bookmark) => 
+                Bookmark({icon: bookmark.icon, label: bookmark.label, link: bookmark.link})
+              )}
+            </div>
+          </div>
+          <div className="text-2xl font-semibold">
+            work
+            <div className="flex flex-col font-normal text-lg pl-5">
+              {/* Bookmark list */}
+              {workBookmarks.map((bookmark) => 
+                Bookmark({icon: bookmark.icon, label: bookmark.label, link: bookmark.link})
+              )}
+            </div>
+          </div>
+          <div className="text-2xl font-semibold">
+            other
+            <div className="flex flex-col font-normal text-lg pl-5">
+              {/* Bookmark list */}
+              {otherBookmarks.map((bookmark) => 
+                Bookmark({icon: bookmark.icon, label: bookmark.label, link: bookmark.link})
+              )}
+            </div>
+          </div>
+          
         </div>
+
       </div>
-
-      
-
-
     </main>
   );
 }
