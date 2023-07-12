@@ -2,8 +2,16 @@ import './App.css';
 import { AiOutlineSearch, AiFillYoutube } from 'react-icons/ai';
 import { DiGoogleDrive} from 'react-icons/di';
 import { FaCss3, FaDiscord, FaInstagram, FaGithub, FaBook, FaFigma } from 'react-icons/fa';
+import { GiHamburgerMenu } from 'react-icons/gi'
 import { IoMdMail } from 'react-icons/io';
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, Component} from 'react'
+
+import porsche from './videos/porsche.gif';
+
+
+// * * * * * * * * * * * * * * * 
+// * *        Data           * * 
+// * * * * * * * * * * * * * * * 
 
 // data for clock
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
@@ -11,66 +19,71 @@ const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'];
 
 // Bookmark data
 
-const bookmarkData = [
+const enterBookmarks = [
   {
     'label':  'youtube',
     'link':   'https://www.youtube.com/',
     'icon':   AiFillYoutube
   },
   {
+    'label':  'instagram',
+    'link':   'https://www.instagram.com/',
+    'icon':   FaInstagram
+  },
+];
+
+const socialsBookmarks = [
+  {
+    'label':  'discord',
+    'link':   'https://discord.com/channels/@me',
+    'icon':   FaDiscord
+  },
+
+  {
     'label':  'gmail',
     'link':   'https://mail.google.com/',
     'icon':   IoMdMail
+  }
+];
+
+const workBookmarks = [
+  {
+    'label':  'ffe',
+    'link':   'https://freefrontend.com/',
+    'icon':   FaCss3
   },
+    {
+    'label':  'figma',
+    'link':   'https://www.figma.com',
+    'icon':   FaFigma
+  },
+  {
+    'label':  'github',
+    'link':   'https://github.com/',
+    'icon':   FaGithub
+  }
+];
+
+const otherBookmarks = [
   {
     'label':  'gdrive',
     'link':   'https://drive.google.com/drive/u/0/my-drive',
     'icon':   DiGoogleDrive
   },
   {
-    'label':  'ffe',
-    'link':   'https://freefrontend.com/',
-    'icon':   FaCss3
-  },
-  {
-    'label':  'discord',
-    'link':   'https://discord.com/channels/@me',
-    'icon':   FaDiscord
-  },
-  {
-    'label':  'github',
-    'link':   'https://github.com/',
-    'icon':   FaGithub
-  },
-  {
-    'label':  'instagram',
-    'link':   'https://www.instagram.com/',
-    'icon':   FaInstagram
-  },
-  {
     'label':  'thesaurus',
     'link':   'https://www.thesaurus.com/',
     'icon':   FaBook
-  },
-  {
-    'label':  'figma',
-    'link':   'https://www.figma.com',
-    'icon':   FaFigma
-  },
+  }
 ];
 
 const engines = {"google":"https://www.google.com/search?q=", "duckduckgo":"https://duckduckgo.com/?q=", "youtube":"https://www.youtube.com/results?q=", "scholar":"https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q="}
 
-const Bookmark = ({icon: Component, label, link}) => {
-  return (
-    <>
-     <div className=" relative flex flex-row items-center w-full py-0.5 ml-[22px] group-hover:ml-4 duration-300">
-        <Component className="text-2xl  text-highlight "/>
-        <a href={link} className="opacity-0 group-hover:opacity-100 absolute left-0 group-hover:left-12 text-xl w-[128px] text-light duration-300">{label}</a>
-      </div>
-    </>
-  )
-}
+
+
+// * * * * * * * * * * * * * * * 
+// * *      Functions        * * 
+// * * * * * * * * * * * * * * * 
 
 // checks for valid URL
 const isWebUrl = value => {
@@ -85,7 +98,6 @@ const isWebUrl = value => {
   }
 }
 
-
 // returns what to search
 function getTargetUrl(value, engine){
   // check to see if input is already a valid URL
@@ -96,7 +108,157 @@ function getTargetUrl(value, engine){
   return engines[engine] + value
 }
 
+ 
 
+// * * * * * * * * * * * * * * * 
+// * *      Components       * * 
+// * * * * * * * * * * * * * * * 
+
+const Bookmark = ({icon: Component, label, link}) => {
+  return (
+    <>
+     <div className="flex flex-row items-center w-full hover:cursor-pointer group">
+        <Component className="text-2xl text-dark/75 group-hover:text-highlight"/>
+        <a href={link} className="flex-1 pl-4 text-xl duration-300 text-dark/75 group-hover:text-highlight">{label}</a>
+      </div>
+    </>
+  )
+}
+
+
+function SideBar(){
+
+  return (
+    <>
+      {/* sidebar */}
+      <div className="group fixed top-0 left-0 w-24 h-screen py-5 pl-3 hover:w-48 duration-300">
+        <div className="h-full rounded-md bg-dark flex flex-col p-2">
+          {/* Bookmark title */}
+          <div className="opacity-0 group-hover:opacity-100 text-2xl text-light text-center duration-300">bookmarks</div>
+
+          {/* Bookmark list */}
+          <div className="flex-1">
+            {enterBookmarks.map((bookmark) => 
+              Bookmark({icon: bookmark.icon, label: bookmark.label, link: bookmark.link})
+            )}
+          </div>
+        </div>
+      </div>
+    </>
+  )
+
+}
+
+
+function SearchOptions(props){
+
+  return(
+    <>
+      {/* Search Options */}
+      <div className="absolute inset-x-0 top-0 bg-dark" onChange={props.onChangeFunction}>
+        <div className="w-[512px] flex justify-around items-end m-auto">
+          <input label="google"     value="google"      type="radio" name="search" class="search-button-new" defaultChecked/>
+          <input label="duckduckgo" value="duckduckgo"  type="radio" name="search" class="search-button-new" />
+          <input label="youtube"    value="youtube"     type="radio" name="search" class="search-button-new" />
+          <input label="scholar"    value="scholar"     type="radio" name="search" class="search-button-new" />
+        </div>
+      </div>
+      {/* <br/> */}
+    </>
+  )
+}
+
+
+function Clock(){
+  // time value
+  const [time, setTime] = useState(new Date());
+  useEffect(() => {
+    setInterval(() => setTime(new Date()), 500);
+  }, []);
+
+  return (
+    <>
+      {/* Clock */}
+      <div className="flex w-[500px] 2xl:w-[900px] m-auto">
+        {/* Time */}
+        <div className="text-6xl 2xl:text-9xl font-black flex-1">
+          <div className="relative">
+            <div className="invisible inline-block">spacer</div>
+            <div className="absolute top-0 -left-6 text-[#00000000] text-shadow text-stroke">{time.getHours()}</div>
+          </div>
+          <div className="relative">
+            <div className="invisible inline-block">spacer</div>
+            <div className="absolute -top-8 left-20 text-[#00000000] text-shadow text-stroke">{time.getMinutes()}</div>
+          </div>
+          <div className="relative">
+            <div className="invisible inline-block">spacer</div>
+            <div className="absolute -top-7 left-6 text-6xl text-[#00000000] text-shadow text-stroke">{time.getSeconds()}</div>
+          </div>
+        </div>
+
+        {/* Date */}
+        <div className="text-6xl 2xl:text-9xl font-black flex-1">
+          <div className="relative">
+            <div className="invisible inline-block">spacer</div>
+            <div className="absolute top-0 left-10 text-[#00000000] text-shadow text-stroke">{days[time.getDay()]}</div>
+          </div>
+          <div className="relative">
+            <div className="invisible inline-block">spacer</div>
+            <div className="absolute top-0 text-6xl text-[#00000000] text-shadow text-stroke">{months[time.getMonth()]}</div>
+          </div>
+          <div className="relative">
+            <div className="invisible inline-block">spacer</div>
+            <div className="absolute -top-16 left-36 text-[#00000000] text-shadow text-stroke">{time.getDate()}</div>
+          </div>
+        </div>
+        
+      </div>
+    </>
+  )
+}
+
+
+function SearchBar(props){
+  return (
+    <>
+      {/* Search Bar */}
+      <form className="absolute bottom-[-28px] inset-x-0 flex justify-center w-[500px] 2xl:w-[900px] bg-light drop-shadow-lg rounded-full m-auto flex" onSubmit={props.engineSubmit}>
+        <div className="flex-1 py-2 pl-2  ">
+          <input type="text" className="w-full focus:outline-none bg-light text-xl 2xl:text-3xl text-dark rounded-full" onChange={props.inputChange}/>
+        </div>
+        <div className="bg-dark w-[100px] hover:cursor-pointer rounded-r-full flex flex-col justify-center border-1 border-solid border-dark">
+          <AiOutlineSearch className="text-4xl text-highlight hover:cursor-pointer m-auto" onClick={props.search}/>
+        </div>
+      </form>
+      {/* <br/> */}
+    </>
+  )
+}
+
+
+function ThemeSwitcher(){
+  return (
+    <>
+      <GiHamburgerMenu className="fixed top-5 left-5 hover:cursor-pointer text-xl 2xl:text-2xl text-light hover:text-2xl 2xl:hover:text-3xl duration-100"/>
+    </>
+  )
+}
+
+
+function BookmarkSection(){
+  return(
+    <>
+      <div className="h-[800px] bg-background rounded-lg border-solid border-light border-4 border-b-8 overflow-hidden">
+        <img src={porsche} alt="porsche vid" className=""/>
+      </div>
+    </>
+  )
+}
+
+
+// * * * * * * * * * * * * * * * 
+// * *       The App         * * 
+// * * * * * * * * * * * * * * * 
 
 function App() {
   // state
@@ -107,14 +269,12 @@ function App() {
   // search input
   const [searchInput, setSearchInput] = useState("");
 
-  // time value
-  const [time, setTime] = useState(new Date());
-  useEffect(() => {
-    setInterval(() => setTime(new Date()), 500);
-  }, []);
+  // for updating search word in search bar
+  function inputChange(e){
+    setSearchInput(e.target.value);
+  }
 
-
-  // functions
+  // hanlder functions for search submission
   function engineClick(e){
     setEngine(e.target.value);
     handleSearch(e.target.value, e.ctrlKey ? true : false);
@@ -129,6 +289,7 @@ function App() {
     handleSearch(engine, e);
   }
 
+  // opens up the desired search in current tab or new one
   function handleSearch(inputEngine, ctrlKey){
     // check for empty
     if ( !(searchInput === "" || searchInput == null) ){
@@ -146,78 +307,70 @@ function App() {
 
   // render
   return (
-    <main className="h-full w-full bg-background">
-      
-      {/* middle stuff */}
-      <div className=" w-[600px] xl:w-[766px] h-[80%] m-auto flex flex-col justify-center">
+    <main className="h-full w-full bg-background flex align-center">
+      <ThemeSwitcher/>
 
-        {/* Clock */}
-        <div className="flex">
-          {/* Time */}
-          <div className="text-8xl xl:text-9xl font-black flex-1">
-            <div className="relative">
-              <div className="invisible inline-block">spacer</div>
-              <div className="absolute top-0 -left-6 text-[#00000000] text-shadow text-stroke">{time.getHours()}</div>
+      <div className="w-full flex flex-col flex flex-col">
+
+        {/* upper */}
+        <div className="h-2/3 w-full flex flex-col justify-around relative bg-cover bg-center" id="asdf">
+
+          <SearchOptions/>
+
+          {/* clock */}
+          <div className="text-center flex flex-col">
+            <div className="text-center text-6xl font-black">
+              04:28 AM
             </div>
-            <div className="relative">
-              <div className="invisible inline-block">spacer</div>
-              <div className="absolute -top-8 left-20 text-[#00000000] text-shadow text-stroke">{time.getMinutes()}</div>
-            </div>
-            <div className="relative">
-              <div className="invisible inline-block">spacer</div>
-              <div className="absolute -top-7 left-6 text-6xl text-[#00000000] text-shadow text-stroke">{time.getSeconds()}</div>
+            <div className="text-center text-6xl font-black text-light">
+              2023-07-10
             </div>
           </div>
 
-          {/* Date */}
-          <div className="text-8xl xl:text-9xl font-black flex-1">
-            <div className="relative">
-              <div className="invisible inline-block">spacer</div>
-              <div className="absolute top-0 left-10 text-[#00000000] text-shadow text-stroke">{days[time.getDay()]}</div>
-            </div>
-            <div className="relative">
-              <div className="invisible inline-block">spacer</div>
-              <div className="absolute top-0 text-6xl text-[#00000000] text-shadow text-stroke">{months[time.getMonth()]}</div>
-            </div>
-            <div className="relative">
-              <div className="invisible inline-block">spacer</div>
-              <div className="absolute -top-16 left-36 text-[#00000000] text-shadow text-stroke">{time.getDate()}</div>
+          <SearchBar/>
+        </div>
+        
+        {/* lower */}
+        <div className="h-1/3 bg-light pt-12 flex justify-around text-dark">
+          <div className="text-2xl font-semibold">
+            entertainment
+            <div className="flex flex-col font-normal text-lg pl-5">
+              {/* Bookmark list */}
+              {enterBookmarks.map((bookmark) => 
+                Bookmark({icon: bookmark.icon, label: bookmark.label, link: bookmark.link})
+              )}
             </div>
           </div>
-        </div>
-
-        {/* Search Bar */}
-        <form className="flex justify-center margin-auto px-6 py-4 mb-8 border-light border-4 border-solid rounded-full" onSubmit={engineSubmit}>
-        {/* <form className="flex justify-center margin-auto px-6 py-4 mb-8 border-light border-4 border-solid rounded-full"> */}
-          <input type="text" className="w-10/12 focus:outline-none bg-background text-2xl text-light" onChange={(e) => setSearchInput(e.target.value)}/>
-          <AiOutlineSearch className="text-4xl w-1/6 text-highlight hover:cursor-pointer" onClick={searchCLick}></AiOutlineSearch>
-        </form>
-        <br/>
-
-        {/* Search Options */}
-        <div className="flex justify-around items-end" onChange={engineClick}>
-          <input label="google"     value="google"      type="radio" name="search" className="before:content-[attr(label)] appearance-none cursor-pointer w-32 xl:w-40 px-1 py-2 text-center font-bold text-lg xl:text-2xl text-light border-light border-b-8 border-[3px] border-solid rounded-md duration-150 ease-[cubic-bezier(.17,1.76,.23,.92)] checked:bg-highlight checked:border-b-[3px]" defaultChecked/>
-          <input label="duckduckgo" value="duckduckgo"  type="radio" name="search" className="before:content-[attr(label)] appearance-none cursor-pointer w-32 xl:w-40 px-1 py-2 text-center font-bold text-lg xl:text-2xl text-light border-light border-b-8 border-[3px] border-solid rounded-md duration-150 ease-[cubic-bezier(.17,1.76,.23,.92)] checked:bg-highlight checked:border-b-[3px]" />
-          <input label="youtube"    value="youtube"     type="radio" name="search" className="before:content-[attr(label)] appearance-none cursor-pointer w-32 xl:w-40 px-1 py-2 text-center font-bold text-lg xl:text-2xl text-light border-light border-b-8 border-[3px] border-solid rounded-md duration-150 ease-[cubic-bezier(.17,1.76,.23,.92)] checked:bg-highlight checked:border-b-[3px]" />
-          <input label="scholar"    value="scholar"     type="radio" name="search" className="before:content-[attr(label)] appearance-none cursor-pointer w-32 xl:w-40 px-1 py-2 text-center font-bold text-lg xl:text-2xl text-light border-light border-b-8 border-[3px] border-solid rounded-md duration-150 ease-[cubic-bezier(.17,1.76,.23,.92)] checked:bg-highlight checked:border-b-[3px]" />
-        </div>
-        <br/>
-      </div>
-
-      {/* sidebar */}
-      <div className="group fixed top-0 left-0 w-24 h-screen py-5 pl-3 hover:w-48 duration-300">
-        <div className="h-full rounded-md bg-dark flex flex-col p-2">
-          {/* Bookmark title */}
-          <div className="opacity-0 group-hover:opacity-100 text-2xl text-light text-center duration-300">bookmarks</div>
-
-          {/* Bookmark list */}
-          <div className="flex-1">
-            {bookmarkData.map((bookmark) => 
-              Bookmark({icon: bookmark.icon, label: bookmark.label, link: bookmark.link})
-            )}
+          <div className="text-2xl font-semibold">
+            socials
+            <div className="flex flex-col font-normal text-lg pl-5">
+              {/* Bookmark list */}
+              {socialsBookmarks.map((bookmark) => 
+                Bookmark({icon: bookmark.icon, label: bookmark.label, link: bookmark.link})
+              )}
+            </div>
           </div>
-
+          <div className="text-2xl font-semibold">
+            work
+            <div className="flex flex-col font-normal text-lg pl-5">
+              {/* Bookmark list */}
+              {workBookmarks.map((bookmark) => 
+                Bookmark({icon: bookmark.icon, label: bookmark.label, link: bookmark.link})
+              )}
+            </div>
+          </div>
+          <div className="text-2xl font-semibold">
+            other
+            <div className="flex flex-col font-normal text-lg pl-5">
+              {/* Bookmark list */}
+              {otherBookmarks.map((bookmark) => 
+                Bookmark({icon: bookmark.icon, label: bookmark.label, link: bookmark.link})
+              )}
+            </div>
+          </div>
+          
         </div>
+
       </div>
     </main>
   );
