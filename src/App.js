@@ -185,7 +185,7 @@ function Clock(){
   return (
     <>
       {/* Time */}
-      <div className="text-6xl font-black flex w-[365px] justify-between m-auto">
+      <div className="text-6xl text-dark font-black flex w-[365px] justify-between m-auto">
         <div className="">
           {time.getHours()}:{time.getMinutes()}:{time.getSeconds()}
         </div>
@@ -224,7 +224,7 @@ function SearchBar(props){
 function ThemeSwitcher(){
   return (
     <>
-      <GiHamburgerMenu className="fixed top-5 left-5 hover:cursor-pointer text-xl 2xl:text-2xl text-light hover:text-2xl 2xl:hover:text-3xl duration-100"/>
+      <GiHamburgerMenu className="fixed top-[16px] left-5 z-10 hover:cursor-pointer text-xl 2xl:text-2xl text-light hover:text-2xl 2xl:hover:text-3xl duration-100"/>
     </>
   )
 }
