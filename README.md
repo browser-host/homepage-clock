@@ -22,3 +22,8 @@ https://browser-host.github.io/homepage-clock/
 5. Make any changes you want, remember to run 'npm run deploy' to see your changes live
 
 I use New Tab Homepage for Firefox
+
+
+## Upcoming Changes
+1. Different themes to chose from
+2. Local weather report
