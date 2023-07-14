@@ -16,10 +16,12 @@ https://browser-host.github.io/homepage-clock/
 
 ## How to make it yours:
 1. Clone the project
-2. Setup GitHub Pages for the repository to deploy from branch
-3. Select 'gh-pages' branch as the branch to deploy from
-4. Use a browser plugin to set your site as the browser's homepage
-5. Make any changes you want, remember to run 'npm run deploy' to see your changes live
+2. Find the getWeatherData() function and change the api key in the get request to your own free key from weatherapi.com
+3. Change the location in the get request to your own local weather
+4. Setup GitHub Pages for the repository to deploy from branch
+5. Select 'gh-pages' branch as the branch to deploy from
+6. Use a browser plugin to set your site as the browser's homepage
+7. Make any other changes you want, remember to run 'npm run deploy' to see your changes live
 
 I use New Tab Homepage for Firefox
 
