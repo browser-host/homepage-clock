@@ -1,5 +1,6 @@
 import './App.css';
-import { AiOutlineSearch, AiFillYoutube } from 'react-icons/ai';
+import { AiOutlineSearch, AiFillYoutube, AiFillLinkedin } from 'react-icons/ai';
+import { SiUpwork, SiNetflix } from 'react-icons/si';
 import { DiGoogleDrive} from 'react-icons/di';
 import { FaCss3, FaDiscord, FaInstagram, FaGithub, FaBook, FaFigma } from 'react-icons/fa';
 import { GiHamburgerMenu } from 'react-icons/gi'
@@ -7,9 +8,7 @@ import { IoMdMail } from 'react-icons/io';
 import { RxNotionLogo } from 'react-icons/rx';
 import React, {useState, useEffect, Component} from 'react'
 
-import porsche from './videos/porsche.gif';
-
-
+import axios, * as others from 'axios';
 // * * * * * * * * * * * * * * * 
 // * *        Data           * * 
 // * * * * * * * * * * * * * * * 
@@ -31,6 +30,11 @@ const enterBookmarks = [
     'link':   'https://www.instagram.com/',
     'icon':   FaInstagram
   },
+  {
+    'label':  'netflix',
+    'link':   'https://www.netflix.com/ca/',
+    'icon':   SiNetflix
+  },
 ];
 
 const socialsBookmarks = [
@@ -39,12 +43,16 @@ const socialsBookmarks = [
     'link':   'https://discord.com/channels/@me',
     'icon':   FaDiscord
   },
-
   {
     'label':  'gmail',
     'link':   'https://mail.google.com/',
     'icon':   IoMdMail
-  }
+  },
+  {
+    'label':  'LinkedIn',
+    'link':   'https://www.linkedin.com/',
+    'icon':   AiFillLinkedin
+  },
 ];
 
 const workBookmarks = [
@@ -62,7 +70,12 @@ const workBookmarks = [
     'label':  'github',
     'link':   'https://github.com/',
     'icon':   FaGithub
-  }
+  },
+  {
+    'label':  'upwork',
+    'link':   'https://www.upwork.com/',
+    'icon':   SiUpwork
+  },
 ];
 
 const otherBookmarks = [
@@ -80,7 +93,7 @@ const otherBookmarks = [
     'label':  'notion',
     'link':   'https://www.notion.so/',
     'icon':   RxNotionLogo
-  }
+  },
 ];
 
 const engines = {"google":"https://www.google.com/search?q=", "duckduckgo":"https://duckduckgo.com/?q=", "youtube":"https://www.youtube.com/results?q=", "scholar":"https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q="}
@@ -132,28 +145,28 @@ const Bookmark = ({icon: Component, label, link}) => {
 }
 
 
-function SideBar(){
+// function SideBar(){
 
-  return (
-    <>
-      {/* sidebar */}
-      <div className="group fixed top-0 left-0 w-24 h-screen py-5 pl-3 hover:w-48 duration-300">
-        <div className="h-full rounded-md bg-dark flex flex-col p-2">
-          {/* Bookmark title */}
-          <div className="opacity-0 group-hover:opacity-100 text-2xl text-light text-center duration-300">bookmarks</div>
+//   return (
+//     <>
+//       {/* sidebar */}
+//       <div className="group fixed top-0 left-0 w-24 h-screen py-5 pl-3 hover:w-48 duration-300">
+//         <div className="h-full rounded-md bg-dark flex flex-col p-2">
+//           {/* Bookmark title */}
+//           <div className="opacity-0 group-hover:opacity-100 text-2xl text-light text-center duration-300">bookmarks</div>
 
-          {/* Bookmark list */}
-          <div className="flex-1">
-            {enterBookmarks.map((bookmark) => 
-              Bookmark({icon: bookmark.icon, label: bookmark.label, link: bookmark.link})
-            )}
-          </div>
-        </div>
-      </div>
-    </>
-  )
+//           {/* Bookmark list */}
+//           <div className="flex-1">
+//             {enterBookmarks.map((bookmark) => 
+//               Bookmark({icon: bookmark.icon, label: bookmark.label, link: bookmark.link})
+//             )}
+//           </div>
+//         </div>
+//       </div>
+//     </>
+//   )
 
-}
+// }
 
 
 function SearchOptions(props){
@@ -185,7 +198,7 @@ function Clock(){
   return (
     <>
       {/* Time */}
-      <div className="text-6xl text-dark font-black flex w-[365px] justify-between m-auto">
+      <div className="text-6xl text-highlight font-black flex w-[365px] justify-between m-auto">
         <div className="">
           {time.getHours()}:{time.getMinutes()}:{time.getSeconds()}
         </div>
@@ -230,14 +243,52 @@ function ThemeSwitcher(){
 }
 
 
-function BookmarkSection(){
-  return(
-    <>
-      <div className="h-[800px] bg-background rounded-lg border-solid border-light border-4 border-b-8 overflow-hidden">
-        <img src={porsche} alt="porsche vid" className=""/>
-      </div>
-    </>
-  )
+class Weather extends Component {
+  state = {
+    condition: 'nothing',
+    currentTemp: 'none',
+    city: 'the middle of nowhere',
+    province: 'nowhere'
+  }
+
+  fetchWeatherData(){
+    // fetch data
+    axios.get('http://api.weatherapi.com/v1/current.json?key=f8ad710fe87e48d1a8283741231207 &q=guelph&aqi=no')
+      .then(function (response) {
+        // handle success
+        console.log(response);
+        this.setState({
+          condition: response.data.current.condition.text,
+          currentTemp: response.data.current.temp_c,
+          city: response.data.location.name,
+          province: response.data.location.region,
+        })
+      }.bind(this))
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      })
+      .finally(function () {
+        // always executed
+      });
+  }
+
+  componentDidMount(){
+    this.fetchWeatherData();
+  }
+
+  render(){
+    // decompose state
+    const {condition, currentTemp, city, province} = this.state;
+
+    return (
+      <>
+        <div className="text-light opacity-70 text-xl mt-2">
+          Currently, it is <span className="lowercase">{condition}</span> at a temp of {currentTemp} °C in {city}, {province}.
+        </div>
+      </>
+    )
+  }
 }
 
 
@@ -293,6 +344,7 @@ function App() {
   // render
   return (
     <main className="h-full w-full bg-background flex align-center">
+
       <ThemeSwitcher/>
 
       <div className="w-full flex flex-col flex flex-col">
@@ -305,6 +357,7 @@ function App() {
           {/* clock */}
           <div className="text-center flex flex-col">
             <Clock/>
+            <Weather/>
           </div>
 
           <SearchBar engineSubmit={engineSubmit} search={searchCLick} inputChange={inputChange}/>
@@ -314,7 +367,7 @@ function App() {
         <div className="h-1/3 bg-light pt-12 flex justify-around text-dark">
           <div className="text-2xl font-semibold">
             entertainment
-            <div className="flex flex-col font-normal text-lg pl-5">
+            <div className="flex flex-col font-normal text-lg">
               {/* Bookmark list */}
               {enterBookmarks.map((bookmark) => 
                 Bookmark({icon: bookmark.icon, label: bookmark.label, link: bookmark.link})
@@ -323,7 +376,7 @@ function App() {
           </div>
           <div className="text-2xl font-semibold">
             socials
-            <div className="flex flex-col font-normal text-lg pl-5">
+            <div className="flex flex-col font-normal text-lg">
               {/* Bookmark list */}
               {socialsBookmarks.map((bookmark) => 
                 Bookmark({icon: bookmark.icon, label: bookmark.label, link: bookmark.link})
@@ -332,7 +385,7 @@ function App() {
           </div>
           <div className="text-2xl font-semibold">
             work
-            <div className="flex flex-col font-normal text-lg pl-5">
+            <div className="flex flex-col font-normal text-lg">
               {/* Bookmark list */}
               {workBookmarks.map((bookmark) => 
                 Bookmark({icon: bookmark.icon, label: bookmark.label, link: bookmark.link})
@@ -341,7 +394,7 @@ function App() {
           </div>
           <div className="text-2xl font-semibold">
             other
-            <div className="flex flex-col font-normal text-lg pl-5">
+            <div className="flex flex-col font-normal text-lg">
               {/* Bookmark list */}
               {otherBookmarks.map((bookmark) => 
                 Bookmark({icon: bookmark.icon, label: bookmark.label, link: bookmark.link})
