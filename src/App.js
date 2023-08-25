@@ -137,7 +137,7 @@ const Bookmark = ({icon: Component, label, link}) => {
   return (
     <>
      <div className="flex flex-row items-center w-full hover:cursor-pointer group">
-        <Component className="text-2xl text-dark/75 group-hover:text-highlight"/>
+        <Component className="text-2xl text-dark/75 group-hover:text-highlight duration-300"/>
         <a href={link} className="flex-1 pl-4 text-xl duration-300 text-dark/75 group-hover:text-highlight">{label}</a>
       </div>
     </>
@@ -253,7 +253,7 @@ class Weather extends Component {
 
   fetchWeatherData(){
     // fetch data
-    axios.get('http://api.weatherapi.com/v1/current.json?key=f8ad710fe87e48d1a8283741231207 &q=guelph&aqi=no')
+    axios.get('https://api.weatherapi.com/v1/current.json?key=f8ad710fe87e48d1a8283741231207 &q=guelph&aqi=no')
       .then(function (response) {
         // handle success
         console.log(response);
