@@ -1,5 +1,5 @@
 
-# Custom Browser Homepage [WIP]
+# Custom Browser Homepage
 This is a rebuild of my previous custom browser homepage that I build using React.js and Tailwind CSS instead of plain HTML, JS, and CSS.
 
 Tech used:
