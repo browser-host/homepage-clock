@@ -16,7 +16,7 @@ https://browser-host.github.io/homepage-clock/
 
 ## How to make it yours:
 1. Clone the project
-2. Find the getWeatherData() function and change the api key in the get request to your own free key from weatherapi.com
+2. Find the getWeatherData() (src/App.js, line 254) function and change the api key in the get request to your own free key from weatherapi.com
 3. Change the location in the get request to your own local weather
 4. Setup GitHub Pages for the repository to deploy from branch
 5. Select 'gh-pages' branch as the branch to deploy from
