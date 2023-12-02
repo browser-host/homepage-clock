@@ -1,6 +1,6 @@
 
 # Custom Browser Homepage
-This is a rebuild of my previous custom browser homepage that I build using React.js and Tailwind CSS instead of plain HTML, JS, and CSS.
+This is a rebuild of my previous custom browser homepage which I made with new technology to advance my skills and learn new things. It features a local weather report, a clock with time and date, multiple search engine options, and my favorite bookmarks.
 
 Tech used:
 - React.js
